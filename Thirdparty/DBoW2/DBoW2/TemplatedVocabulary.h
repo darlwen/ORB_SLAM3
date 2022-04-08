@@ -253,6 +253,12 @@ public:
   void saveToTextFile(const std::string &filename) const;  
 
   /**
+   * Saves the vocabulary into a binary file
+   * @param filename
+   */
+  void saveToBinaryFile(const std::string &filename) const; 
+
+  /**
    * Saves the vocabulary into a file
    * @param filename
    */
@@ -1472,6 +1478,31 @@ bool TemplatedVocabulary<TDescriptor,F>::loadFromBinaryFile(const std::string &f
   }
   f.close();
   return true;
+}
+
+// --------------------------------------------------------------------------
+
+template<class TDescriptor, class F>
+void TemplatedVocabulary<TDescriptor,F>::saveToBinaryFile(const std::string &filename) const {
+  fstream f;
+  f.open(filename.c_str(), ios_base::out|ios::binary);
+  unsigned int nb_nodes = m_nodes.size();
+  float _weight;
+  unsigned int size_node = sizeof(m_nodes[0].parent) + F::L*sizeof(char) + sizeof(_weight) + sizeof(bool);
+  f.write((char*)&nb_nodes, sizeof(nb_nodes));
+  f.write((char*)&size_node, sizeof(size_node));
+  f.write((char*)&m_k, sizeof(m_k));
+  f.write((char*)&m_L, sizeof(m_L));
+  f.write((char*)&m_scoring, sizeof(m_scoring));
+  f.write((char*)&m_weighting, sizeof(m_weighting));
+  for(size_t i=1; i<nb_nodes;i++) {
+	const Node& node = m_nodes[i];
+	f.write((char*)&node.parent, sizeof(node.parent));
+	f.write((char*)node.descriptor.data, F::L);
+	_weight = node.weight; f.write((char*)&_weight, sizeof(_weight));
+	bool is_leaf = node.isLeaf(); f.write((char*)&is_leaf, sizeof(is_leaf)); // i put this one at the end for alignement....
+  }
+  f.close();
 }
 
 // --------------------------------------------------------------------------

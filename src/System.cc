@@ -23,6 +23,7 @@
 #include <thread>
 #include <pangolin/pangolin.h>
 #include <iomanip>
+#include <time.h>
 #include <openssl/md5.h>
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/string.hpp>
@@ -32,6 +33,11 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
+
+bool has_suffix(const std::string &str, const std::string &suffix) {
+  std::size_t index = str.find(suffix, str.size() - suffix.size());
+  return (index != std::string::npos);
+}
 
 namespace ORB_SLAM3
 {
@@ -114,16 +120,23 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         //Load ORB Vocabulary
         cout << endl << "Loading ORB Vocabulary. This could take a while..." << endl;
 
+        clock_t tStart = clock();
         mpVocabulary = new ORBVocabulary();
        // bool bVocLoad = mpVocabulary->loadFromTextFile(strVocFile);
-       bool bVocLoad = mpVocabulary->loadFromBinaryFile(strVocFile);
+       bool bVocLoad = false; // chose loading method based on file extension
+       if (has_suffix(strVocFile, ".txt"))
+            bVocLoad = mpVocabulary->loadFromTextFile(strVocFile);
+        else
+            bVocLoad = mpVocabulary->loadFromBinaryFile(strVocFile);
+
         if(!bVocLoad)
         {
             cerr << "Wrong path to vocabulary. " << endl;
-            cerr << "Falied to open at: " << strVocFile << endl;
+            cerr << "Failed to open at: " << strVocFile << endl;
             exit(-1);
         }
-        cout << "Vocabulary loaded!" << endl << endl;
+        //cout << "Vocabulary loaded!" << endl << endl;
+        printf("Vocabulary loaded in %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
 
         //Create KeyFrame Database
         mpKeyFrameDatabase = new KeyFrameDatabase(*mpVocabulary);
