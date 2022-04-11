@@ -20,14 +20,14 @@ Camera1.p2: -4.02349443e-01
 Camera1.k3: -2.22029888e+05
 
 # Camera frames per second 
-Camera.fps: 30
+Camera.fps: 60
 
 # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
 Camera.RGB: 1
 
 # Camera resolution
-Camera.width: 1920
-Camera.height: 1080
+Camera.width: 1080
+Camera.height: 1920
 
 #--------------------------------------------------------------------------------------------
 # ORB Parameters
@@ -53,7 +53,7 @@ ORBextractor.minThFAST: 7
 # Viewer Parameters
 #--------------------------------------------------------------------------------------------
 Viewer.KeyFrameSize: 0.05
-Viewer.KeyFrameLineWidth: 1.0
+Viewer.KeyFrameLineWidth: 5.0
 Viewer.GraphLineWidth: 0.9
 Viewer.PointSize: 2.0
 Viewer.CameraSize: 0.08
