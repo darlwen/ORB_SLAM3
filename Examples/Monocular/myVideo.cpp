@@ -21,11 +21,12 @@ ORB_SLAM3::System SLAM(vocFile, parameterFile, ORB_SLAM3::System::MONOCULAR, tru
 cv::VideoCapture cap(videoFile);    // change to 1 if you want to use USB camera.
 // 记录系统时间
 auto start = chrono::system_clock::now();
-
+int idx = 1;
 while (1) {
         cv::Mat frame;
         cap >> frame;   // 读取相机数据
         cv::imshow("ORB-SLAM3: Image check",frame);
+        cout << "idx is: " << idx << endl;
         if ( frame.data == nullptr ) {
             cout << "get nothing" << endl;
             break;
