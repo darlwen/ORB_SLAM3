@@ -25,7 +25,6 @@ int idx = 1;
 while (1) {
         cv::Mat frame;
         cap >> frame;   // 读取相机数据
-        cv::imshow("ORB-SLAM3: Image check",frame);
         cout << "idx is: " << idx << endl;
         if ( frame.data == nullptr ) {
             cout << "get nothing" << endl;
@@ -38,7 +37,6 @@ while (1) {
 
         auto now = chrono::system_clock::now();
         auto timestamp = chrono::duration_cast<chrono::milliseconds>(now - start);
-        cv::imshow("ORB-SLAM3: Image check",frame_resized);
         SLAM.TrackMonocular(frame_resized, double(timestamp.count())/1000.0);
         cv::waitKey(30);
     }
