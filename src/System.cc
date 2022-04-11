@@ -433,7 +433,6 @@ Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, 
     }
 
     cout << "======================================== input image frame =================================" << endl;
-    cout << "input image frame: " << imToFeed << endl;
     // Check mode change
     {
         unique_lock<mutex> lock(mMutexMode);
