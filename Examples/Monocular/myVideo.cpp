@@ -34,6 +34,7 @@ while (1) {
 
         auto now = chrono::system_clock::now();
         auto timestamp = chrono::duration_cast<chrono::milliseconds>(now - start);
+        cv::imshow("ORB-SLAM3: Image check",frame_resized);
         SLAM.TrackMonocular(frame_resized, double(timestamp.count())/1000.0);
         cv::waitKey(30);
     }
