@@ -319,6 +319,7 @@ void Viewer::Run()
 
         cv::Mat toShow;
         cv::Mat im = mpFrameDrawer->DrawFrame(trackedImageScale);
+        cout << "get image: " << im << endl;
 
         if(both){
             cv::Mat imRight = mpFrameDrawer->DrawRightFrame(trackedImageScale);

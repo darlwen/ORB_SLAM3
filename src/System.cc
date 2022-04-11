@@ -432,6 +432,7 @@ Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, 
         imToFeed = resizedIm;
     }
 
+    cout << "input image frame: " << imToFeed << endl;
     // Check mode change
     {
         unique_lock<mutex> lock(mMutexMode);
