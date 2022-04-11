@@ -195,6 +195,8 @@ cv::Mat FrameDrawer::DrawFrame(float imageScale)
         }
     }
 
+    cout << "============================ before draw text info =============================" << endl;
+    cout << im << endl;
     cv::Mat imWithInfo;
     DrawTextInfo(im,state, imWithInfo);
 
