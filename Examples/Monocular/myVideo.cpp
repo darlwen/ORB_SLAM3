@@ -25,9 +25,12 @@ auto start = chrono::system_clock::now();
 while (1) {
         cv::Mat frame;
         cap >> frame;   // 读取相机数据
-        if ( frame.data == nullptr )
+        cv::imshow("ORB-SLAM3: Image check",frame);
+        if ( frame.data == nullptr ) {
+            cout << "get nothing" << endl;
             break;
-
+        }
+        
         // rescale because image is too large
         cv::Mat frame_resized;
         cv::resize(frame, frame_resized, cv::Size(480,640));
