@@ -2452,7 +2452,7 @@ void Tracking::StereoInitialization()
 void Tracking::MonocularInitialization()
 {
     cout << "DEBUG: ============================ MonocularInitialization =========================" << endl;
-    cout << " keypoints size: " << (mCurrentFrame.mvKeys.size() << endl;
+    cout << " keypoints size: " << mCurrentFrame.mvKeys.size() << endl;
 
     if(!mbReadyToInitializate)
     {
