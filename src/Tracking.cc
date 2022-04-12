@@ -2456,6 +2456,7 @@ void Tracking::MonocularInitialization()
 
     if(!mbReadyToInitializate)
     {
+        cout << " enter set reference frame log" << endl;
         // Set Reference Frame
         if(mCurrentFrame.mvKeys.size()>100)
         {
@@ -2486,6 +2487,7 @@ void Tracking::MonocularInitialization()
     }
     else
     {
+        cout << " enter else logic" << endl;
         if (((int)mCurrentFrame.mvKeys.size()<=100)||((mSensor == System::IMU_MONOCULAR)&&(mLastFrame.mTimeStamp-mInitialFrame.mTimeStamp>1.0)))
         {
             mbReadyToInitializate = false;
@@ -2497,6 +2499,7 @@ void Tracking::MonocularInitialization()
         ORBmatcher matcher(0.9,true);
         int nmatches = matcher.SearchForInitialization(mInitialFrame,mCurrentFrame,mvbPrevMatched,mvIniMatches,100);
 
+        cout << " number of matches: " << nmatches << endl;
         // Check if there are enough correspondences
         if(nmatches<100)
         {
