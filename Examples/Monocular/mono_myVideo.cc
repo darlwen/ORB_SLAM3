@@ -119,8 +119,6 @@ int main(int argc, char **argv)
             // Wait to load the next frame
             double T=0;
            cv::waitKey(30);
-           idx += 1;
-           if (idx > 5) break;
 
     }
     // Stop all threads
