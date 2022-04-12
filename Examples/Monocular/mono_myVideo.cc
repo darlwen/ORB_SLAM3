@@ -27,9 +27,6 @@
 
 using namespace std;
 
-void LoadImages(const string &strImagePath, const string &strPathTimes,
-                vector<string> &vstrImages, vector<double> &vTimeStamps);
-
 int main(int argc, char **argv)
 {  
     if(argc < 3)
@@ -128,18 +125,9 @@ int main(int argc, char **argv)
     SLAM.Shutdown();
 
     // Save camera trajectory
-    if (bFileName)
-    {
-        const string kf_file =  "kf" + ".txt";
-        const string f_file =  "f"  + ".txt";
-        SLAM.SaveTrajectoryEuRoC(f_file);
-        SLAM.SaveKeyFrameTrajectoryEuRoC(kf_file);
-    }
-    else
-    {
-        SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
-        SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
-    }
+    SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
+    SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
+    
 
     return 0;
 }
