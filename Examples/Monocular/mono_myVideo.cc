@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 
     double t_resize = 0.f;
     double t_track = 0.f;
-
+    int idx = 0;
     while (1)
     {
         // Main loop
@@ -119,6 +119,8 @@ int main(int argc, char **argv)
             // Wait to load the next frame
             double T=0;
            cv::waitKey(30);
+           idx += 1;
+           if (idx > 5) break;
 
     }
     // Stop all threads

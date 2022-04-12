@@ -38,7 +38,8 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    const int num_seq = (argc-3)/2;
+    //const int num_seq = (argc-3)/2;
+    const int num_seq = 5;
     cout << "num_seq = " << num_seq << endl;
     bool bFileName= (((argc-3) % 2) == 1);
     string file_name;
