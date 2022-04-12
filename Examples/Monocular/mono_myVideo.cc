@@ -66,7 +66,7 @@ int main(int argc, char **argv)
         if(im.empty())
         {
             cerr << endl << "Failed to load image at: "
-                    <<  timestamp << endl;
+                    <<  tframe << endl;
             return 1;
         }
 
