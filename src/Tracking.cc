@@ -1794,6 +1794,7 @@ void Tracking::ResetFrameIMU()
 void Tracking::Track()
 {
 
+    cout << "DEBUG: ============================ Track =========================" << endl;
     if (bStepByStep)
     {
         std::cout << "Tracking: Waiting to the next step" << std::endl;
@@ -2336,6 +2337,7 @@ void Tracking::Track()
 
 void Tracking::StereoInitialization()
 {
+    cout << "DEBUG: ============================ StereoInitialization =========================" << endl;
     if(mCurrentFrame.N>500)
     {
         if (mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD)
@@ -2449,6 +2451,7 @@ void Tracking::StereoInitialization()
 
 void Tracking::MonocularInitialization()
 {
+    cout << "DEBUG: ============================ MonocularInitialization =========================" << endl;
 
     if(!mbReadyToInitializate)
     {
@@ -2527,6 +2530,7 @@ void Tracking::MonocularInitialization()
 
 void Tracking::CreateInitialMapMonocular()
 {
+    cout << "Debug ================== enter CreateInitialMapMonocular =================== " << endl;
     // Create KeyFrames
     KeyFrame* pKFini = new KeyFrame(mInitialFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
     KeyFrame* pKFcur = new KeyFrame(mCurrentFrame,mpAtlas->GetCurrentMap(),mpKeyFrameDB);
@@ -2663,6 +2667,7 @@ void Tracking::CreateInitialMapMonocular()
 
 void Tracking::CreateMapInAtlas()
 {
+    cout << "DEBUG: ==================== enter CreateMapInAtlas ==================" << endl;
     mnLastInitFrameId = mCurrentFrame.mnId;
     mpAtlas->CreateNewMap();
     if (mSensor==System::IMU_STEREO || mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_RGBD)
@@ -2703,6 +2708,7 @@ void Tracking::CreateMapInAtlas()
 
 void Tracking::CheckReplacedInLastFrame()
 {
+    cout << "DEBUG: ============================ CheckReplacedInLastFrame =========================" << endl;
     for(int i =0; i<mLastFrame.N; i++)
     {
         MapPoint* pMP = mLastFrame.mvpMapPoints[i];
@@ -2721,6 +2727,7 @@ void Tracking::CheckReplacedInLastFrame()
 
 bool Tracking::TrackReferenceKeyFrame()
 {
+    cout << "DEBUG: ============================ TrackReferenceKeyFrame =========================" << endl;
     // Compute Bag of Words vector
     mCurrentFrame.ComputeBoW();
 
@@ -2782,6 +2789,7 @@ bool Tracking::TrackReferenceKeyFrame()
 
 void Tracking::UpdateLastFrame()
 {
+    cout << "DEBUG: ============================ UpdateLastFrame =========================" << endl;
     // Update pose according to reference keyframe
     KeyFrame* pRef = mLastFrame.mpReferenceKF;
     Sophus::SE3f Tlr = mlRelativeFramePoses.back();
@@ -2855,6 +2863,7 @@ void Tracking::UpdateLastFrame()
 
 bool Tracking::TrackWithMotionModel()
 {
+    cout << "DEBUG: ====================== TrackWithMotionModel ======================" << endl;
     ORBmatcher matcher(0.9,true);
 
     // Update last frame pose according to its reference keyframe
@@ -2951,6 +2960,7 @@ bool Tracking::TrackWithMotionModel()
 bool Tracking::TrackLocalMap()
 {
 
+     cout << "DEBUG: ========================== TrackLocalMap ==================" << endl;
     // We have an estimation of the camera pose and some map points tracked in the frame.
     // We retrieve the local map and try to find matches to points in the local map.
     mTrackedFr++;
@@ -3065,6 +3075,8 @@ bool Tracking::TrackLocalMap()
 
 bool Tracking::NeedNewKeyFrame()
 {
+    cout << "DEBUG: ======================= NeedNewKeyFrame ========================" << endl;
+
     if((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD) && !mpAtlas->GetCurrentMap()->isImuInitialized())
     {
         if (mSensor == System::IMU_MONOCULAR && (mCurrentFrame.mTimeStamp-mpLastKeyFrame->mTimeStamp)>=0.25)
@@ -3217,6 +3229,8 @@ bool Tracking::NeedNewKeyFrame()
 
 void Tracking::CreateNewKeyFrame()
 {
+    cout << "DEBUG: ========================= CreateNewKeyFrame ==========================" << endl;
+
     if(mpLocalMapper->IsInitializing() && !mpAtlas->isImuInitialized())
         return;
 
@@ -3344,6 +3358,7 @@ void Tracking::CreateNewKeyFrame()
 
 void Tracking::SearchLocalPoints()
 {
+    cout << "DEBUG: =================================== SearchLocalPoints ===============================" << endl;
     // Do not search map points already matched
     for(vector<MapPoint*>::iterator vit=mCurrentFrame.mvpMapPoints.begin(), vend=mCurrentFrame.mvpMapPoints.end(); vit!=vend; vit++)
     {
@@ -3418,6 +3433,7 @@ void Tracking::SearchLocalPoints()
 
 void Tracking::UpdateLocalMap()
 {
+    cout << "DEBUG: ============================ UpdateLocalMap =========================" << endl;
     // This is for visualization
     mpAtlas->SetReferenceMapPoints(mvpLocalMapPoints);
 
@@ -3428,6 +3444,7 @@ void Tracking::UpdateLocalMap()
 
 void Tracking::UpdateLocalPoints()
 {
+    cout << "DEBUG: ============================ UpdateLocalPoints =========================" << endl;
     mvpLocalMapPoints.clear();
 
     int count_pts = 0;
@@ -3458,6 +3475,7 @@ void Tracking::UpdateLocalPoints()
 
 void Tracking::UpdateLocalKeyFrames()
 {
+    cout << "DEBUG: ============================ UpdateLocalKeyFrames =========================" << endl;
     // Each map point vote for the keyframes in which it has been observed
     map<KeyFrame*,int> keyframeCounter;
     if(!mpAtlas->isImuInitialized() || (mCurrentFrame.mnId<mnLastRelocFrameId+2))
@@ -3610,6 +3628,7 @@ void Tracking::UpdateLocalKeyFrames()
 
 bool Tracking::Relocalization()
 {
+    cout << "DEBUG: ============================ Relocalization =========================" << endl;
     Verbose::PrintMess("Starting relocalization", Verbose::VERBOSITY_NORMAL);
     // Compute Bag of Words Vector
     mCurrentFrame.ComputeBoW();
@@ -3780,6 +3799,7 @@ bool Tracking::Relocalization()
 
 void Tracking::Reset(bool bLocMap)
 {
+    cout << "DEBUG: ============================ Reset =========================" << endl;
     Verbose::PrintMess("System Reseting", Verbose::VERBOSITY_NORMAL);
 
     if(mpViewer)
@@ -3841,6 +3861,7 @@ void Tracking::Reset(bool bLocMap)
 
 void Tracking::ResetActiveMap(bool bLocMap)
 {
+    cout << "DEBUG: ============================ ResetActiveMap =========================" << endl;
     Verbose::PrintMess("Active map Reseting", Verbose::VERBOSITY_NORMAL);
     if(mpViewer)
     {
@@ -3937,6 +3958,7 @@ vector<MapPoint*> Tracking::GetLocalMapMPS()
 
 void Tracking::ChangeCalibration(const string &strSettingPath)
 {
+    cout << "DEBUG: ============================ ChangeCalibration =========================" << endl;
     cv::FileStorage fSettings(strSettingPath, cv::FileStorage::READ);
     float fx = fSettings["Camera.fx"];
     float fy = fSettings["Camera.fy"];
@@ -3981,6 +4003,7 @@ void Tracking::InformOnlyTracking(const bool &flag)
 
 void Tracking::UpdateFrameIMU(const float s, const IMU::Bias &b, KeyFrame* pCurrentKeyFrame)
 {
+    cout << "DEBUG: ============================ UpdateFrameIMU =========================" << endl;
     Map * pMap = pCurrentKeyFrame->GetMap();
     unsigned int index = mnFirstFrameId;
     list<ORB_SLAM3::KeyFrame*>::iterator lRit = mlpReferences.begin();
