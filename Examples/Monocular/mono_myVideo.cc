@@ -29,9 +29,9 @@ using namespace std;
 
 int main(int argc, char **argv)
 {  
-    if(argc < 3)
+    if(argc < 4)
     {
-        cerr << endl << "Usage: ./mono_myVideo path_to_vocabulary path_to_settings " << endl;
+        cerr << endl << "Usage: ./mono_myVideo path_to_vocabulary path_to_settings video_file_path " << endl;
         return 1;
     }
 
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
     ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::MONOCULAR, true);
     float imageScale = SLAM.GetImageScale();
-    cv::VideoCapture cap(videoFile);    // change to 1 if you want to use USB camera.
+    cv::VideoCapture cap(argv[3]);    // change to 1 if you want to use USB camera.
     // 记录系统时间
     auto start = chrono::system_clock::now();
 
