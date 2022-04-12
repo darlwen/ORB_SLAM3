@@ -25,6 +25,7 @@ int idx = 1;
 while (1) {
         cv::Mat frame;
         cap >> frame;   // 读取相机数据
+       // cv::imshow("ORB-SLAM3: Image check",frame);
         cout << "idx is: " << idx << endl;
         if ( frame.data == nullptr ) {
             cout << "get nothing" << endl;

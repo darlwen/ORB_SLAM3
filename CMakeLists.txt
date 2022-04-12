@@ -189,7 +189,8 @@ endif()
 #Monocular examples
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Monocular)
 
-add_executable(myVideo Examples/Monocular/myVideo.cpp)
+add_executable(myVideo 
+        Examples/Monocular/myVideo.cpp)
 target_link_libraries(myVideo ${PROJECT_NAME})
 
 add_executable(mono_tum

@@ -1898,6 +1898,7 @@ void Tracking::Track()
 
     if(mState==NOT_INITIALIZED)
     {
+        cout << " ================== tracking  not initialzied ================ " << endl;   
         if(mSensor==System::STEREO || mSensor==System::RGBD || mSensor==System::IMU_STEREO || mSensor==System::IMU_RGBD)
         {
             StereoInitialization();
@@ -1922,6 +1923,7 @@ void Tracking::Track()
     }
     else
     {
+        cout << " ================== tracking  system initialzied ================ " << endl; 
         // System is initialized. Track Frame.
         bool bOK;
 
