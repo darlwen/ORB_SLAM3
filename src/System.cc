@@ -240,8 +240,10 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     //usleep(10*1000*1000);
 
     //Initialize the Viewer thread and launch
-    if(bUseViewer)
+    //if(bUseViewer)
     //if(false) // TODO
+    bUseViewer = true;
+    if(bUseViewer)
     {
         cout << " =========== enter bUserViewer Initialization ===============" << endl;
         mpViewer = new Viewer(this, mpFrameDrawer,mpMapDrawer,mpTracker,strSettingsFile,settings_);
