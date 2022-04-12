@@ -193,6 +193,10 @@ add_executable(myVideo
         Examples/Monocular/myVideo.cpp)
 target_link_libraries(myVideo ${PROJECT_NAME})
 
+add_executable(mono_myVideo 
+        Examples/Monocular/mono_myVideo.cpp)
+target_link_libraries(mono_myVideo ${PROJECT_NAME})
+
 add_executable(mono_tum
         Examples/Monocular/mono_tum.cc)
 target_link_libraries(mono_tum ${PROJECT_NAME})
