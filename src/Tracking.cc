@@ -641,7 +641,7 @@ bool Tracking::ParseCamParamFile(cv::FileStorage &fSettings)
         }
 
         // Camera calibration image height
-        cv::FileNode node = fSettings["Camera.height"];
+        node = fSettings["Camera.height"];
         if(!node.empty() && node.isReal())
         {
             mHeight = node.real();
@@ -653,7 +653,7 @@ bool Tracking::ParseCamParamFile(cv::FileStorage &fSettings)
         }
 
         // Camera calibration parameters
-        cv::FileNode node = fSettings["Camera.fx"];
+        node = fSettings["Camera.fx"];
         if(!node.empty() && node.isReal())
         {
             fx = node.real();
