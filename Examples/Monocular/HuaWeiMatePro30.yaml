@@ -29,8 +29,7 @@ Camera.RGB: 1
 Camera.width: 1080
 Camera.height: 1920
 
-Camera.newWidth: 480
-Camera.newHeight: 640
+Camera.imageScale: 0.2873
 
 #--------------------------------------------------------------------------------------------
 # ORB Parameters

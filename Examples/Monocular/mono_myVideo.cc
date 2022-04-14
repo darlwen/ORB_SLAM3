@@ -70,8 +70,6 @@ int main(int argc, char **argv)
         }
 
         cout << " get one frame image from video" << endl;
-        if(imageScale != 1.f)
-        {
 #ifdef REGISTER_TIMES
 #ifdef COMPILEDWITHC11
             std::chrono::steady_clock::time_point t_Start_Resize = std::chrono::steady_clock::now();
@@ -83,6 +81,10 @@ int main(int argc, char **argv)
           //  int height = frame.rows * imageScale;
 
           //  cout << "height: " << height << "   width: " << width << endl;
+          float imageScaleW = frame.cols / width;
+          float imageScaleH = frame.rows / height;
+
+          cout << "width: " << frame.cols << " height: " << frame.rows << endl;
 
             cv::resize(frame, frame, cv::Size(width, height));
 #ifdef REGISTER_TIMES
@@ -94,7 +96,6 @@ int main(int argc, char **argv)
             t_resize = std::chrono::duration_cast<std::chrono::duration<double,std::milli> >(t_End_Resize - t_Start_Resize).count();
             SLAM.InsertResizeTime(t_resize);
 #endif
-        }
 
     #ifdef COMPILEDWITHC11
             std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
