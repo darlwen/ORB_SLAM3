@@ -107,6 +107,8 @@ public:
     void SaveSubTrajectory(string strNameFile_frames, string strNameFile_kf, Map* pMap);
 
     float GetImageScale();
+    float GetImageWidth();
+    float GetImageHeight();
 
 #ifdef REGISTER_LOOP
     void RequestStop();
@@ -292,6 +294,8 @@ protected:
     cv::Mat mDistCoef;
     float mbf;
     float mImageScale;
+    float mWidth;
+    float mHeight;
 
     float mImuFreq;
     double mImuPer;

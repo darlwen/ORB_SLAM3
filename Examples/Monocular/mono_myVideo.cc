@@ -40,7 +40,11 @@ int main(int argc, char **argv)
     float dT = 1.f/fps;
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
     ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::MONOCULAR, true);
-    float imageScale = SLAM.GetImageScale();
+    float width = SLAM.GetImageWidth();
+    float height = SLAM.GetImageHeight();
+    
+   // cout << "image scale: " << imageScale << endl;
+
     cv::VideoCapture cap(argv[3]);    // change to 1 if you want to use USB camera.
     // 记录系统时间
     auto start = chrono::system_clock::now();
@@ -75,8 +79,11 @@ int main(int argc, char **argv)
             std::chrono::monotonic_clock::time_point t_Start_Resize = std::chrono::monotonic_clock::now();
 #endif
 #endif
-            int width = frame.cols * imageScale;
-            int height = frame.rows * imageScale;
+          //  int width = frame.cols * imageScale;
+          //  int height = frame.rows * imageScale;
+
+          //  cout << "height: " << height << "   width: " << width << endl;
+
             cv::resize(frame, frame, cv::Size(width, height));
 #ifdef REGISTER_TIMES
 #ifdef COMPILEDWITHC11

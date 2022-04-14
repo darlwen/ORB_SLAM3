@@ -628,6 +628,30 @@ bool Tracking::ParseCamParamFile(cv::FileStorage &fSettings)
         float fx, fy, cx, cy;
         mImageScale = 1.f;
 
+        // Camera calibration image width
+        cv::FileNode node = fSettings["Camera.width"];
+        if(!node.empty() && node.isReal())
+        {
+            mWidth = node.real();
+        }
+        else
+        {
+            std::cerr << "*Camera.width parameter doesn't exist or is not a real number*" << std::endl;
+            b_miss_params = true;
+        }
+
+        // Camera calibration image height
+        cv::FileNode node = fSettings["Camera.height"];
+        if(!node.empty() && node.isReal())
+        {
+            mHeight = node.real();
+        }
+        else
+        {
+            std::cerr << "*Camera.height parameter doesn't exist or is not a real number*" << std::endl;
+            b_miss_params = true;
+        }
+
         // Camera calibration parameters
         cv::FileNode node = fSettings["Camera.fx"];
         if(!node.empty() && node.isReal())
@@ -753,6 +777,8 @@ bool Tracking::ParseCamParamFile(cv::FileStorage &fSettings)
 
         std::cout << "- Camera: Pinhole" << std::endl;
         std::cout << "- Image scale: " << mImageScale << std::endl;
+        std::cout << "- Image width: " << mWidth << std::endl;
+        std::cout << "- Image height: " << mImageHeight << std::endl;
         std::cout << "- fx: " << fx << std::endl;
         std::cout << "- fy: " << fy << std::endl;
         std::cout << "- cx: " << cx << std::endl;
@@ -4077,6 +4103,17 @@ float Tracking::GetImageScale()
 {
     return mImageScale;
 }
+
+float Tracking::GetImageWidth()
+{
+    return mWidth;
+}
+
+float Tracking::GetImageHeight()
+{
+    return mHeight;
+}
+
 
 #ifdef REGISTER_LOOP
 void Tracking::RequestStop()

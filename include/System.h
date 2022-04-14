@@ -185,6 +185,8 @@ public:
     void ChangeDataset();
 
     float GetImageScale();
+    float GetImageWidth();
+    float GetImageHeight();
 
 #ifdef REGISTER_TIMES
     void InsertRectTime(double& time);

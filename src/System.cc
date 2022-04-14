@@ -1400,6 +1400,16 @@ float System::GetImageScale()
     return mpTracker->GetImageScale();
 }
 
+float System::GetImageWidth()
+{
+    return mpTracker->GetImageWidth();
+}
+
+float System::GetImageHeight()
+{
+    return mpTracker->GetImageHeight();
+}
+
 #ifdef REGISTER_TIMES
 void System::InsertRectTime(double& time)
 {
