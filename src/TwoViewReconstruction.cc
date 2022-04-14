@@ -109,6 +109,7 @@ namespace ORB_SLAM3
         threadH.join();
         threadF.join();
 
+        cout << "SH: " << SH << "    SF: " << SF << endl;
         // Compute ratio of scores
         if(SH+SF == 0.f) return false;
         float RH = SH/(SH+SF);
@@ -118,12 +119,12 @@ namespace ORB_SLAM3
         // Try to reconstruct from homography or fundamental depending on the ratio (0.40-0.45)
         if(RH>0.50) // if(RH>0.40)
         {
-            //cout << "Initialization from Homography" << endl;
+            cout << "Initialization from Homography" << endl;
             return ReconstructH(vbMatchesInliersH,H, mK,T21,vP3D,vbTriangulated,minParallax,50);
         }
         else //if(pF_HF>0.6)
         {
-            //cout << "Initialization from Fundamental" << endl;
+            cout << "Initialization from Fundamental" << endl;
             return ReconstructF(vbMatchesInliersF,F,mK,T21,vP3D,vbTriangulated,minParallax,50);
         }
     }
