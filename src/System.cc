@@ -244,7 +244,6 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     //if(false) // TODO
     if(true)
     {
-        cout << " =========== enter bUserViewer Initialization ===============" << endl;
         mpViewer = new Viewer(this, mpFrameDrawer,mpMapDrawer,mpTracker,strSettingsFile,settings_);
         mptViewer = new thread(&Viewer::Run, mpViewer);
         mpTracker->SetViewer(mpViewer);
@@ -414,7 +413,6 @@ Sophus::SE3f System::TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const
 
 Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, const vector<IMU::Point>& vImuMeas, string filename)
 {
-    cout << "timestampe = " << timestamp << endl;
 
     {
         unique_lock<mutex> lock(mMutexReset);
@@ -435,7 +433,6 @@ Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, 
         imToFeed = resizedIm;
     }
 
-    cout << "======================================== input image frame =================================" << endl;
     // Check mode change
     {
         unique_lock<mutex> lock(mMutexMode);
