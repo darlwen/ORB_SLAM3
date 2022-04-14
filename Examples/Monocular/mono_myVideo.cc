@@ -70,6 +70,7 @@ int main(int argc, char **argv)
             return 1;
         }
 
+        cout << " get one frame image from video" << endl;
         if(imageScale != 1.f)
         {
 #ifdef REGISTER_TIMES
