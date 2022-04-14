@@ -50,20 +50,15 @@ int main(int argc, char **argv)
     int idx = 0;
     while (1)
     {
-        // Main loop
-        cv::Mat im;
 
         cv::Mat frame;
         cap >> frame;   // 读取相机数据
-
-        // Read image from file
-        im = frame; //,CV_LOAD_IMAGE_UNCHANGED);
 
         auto now = chrono::system_clock::now();
         auto timestamp = chrono::duration_cast<chrono::milliseconds>(now - start);
         double tframe = double(timestamp.count())/1000.0;
 
-        if(im.empty())
+        if(frame.data == nullptr)
         {
             cerr << endl << "Finish loading image at: "
                     <<  tframe << endl;
@@ -80,9 +75,9 @@ int main(int argc, char **argv)
             std::chrono::monotonic_clock::time_point t_Start_Resize = std::chrono::monotonic_clock::now();
 #endif
 #endif
-            int width = im.cols * imageScale;
-            int height = im.rows * imageScale;
-            cv::resize(im, im, cv::Size(width, height));
+            int width = frame.cols * imageScale;
+            int height = frame.rows * imageScale;
+            cv::resize(frame, frame, cv::Size(width, height));
 #ifdef REGISTER_TIMES
 #ifdef COMPILEDWITHC11
             std::chrono::steady_clock::time_point t_End_Resize = std::chrono::steady_clock::now();
@@ -102,7 +97,7 @@ int main(int argc, char **argv)
 
             // Pass the image to the SLAM system
             cout << "tframe = " << tframe << endl;
-            SLAM.TrackMonocular(im,tframe); // TODO change to monocular_inertial
+            SLAM.TrackMonocular(frame,tframe); // TODO change to monocular_inertial
 
     #ifdef COMPILEDWITHC11
             std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
