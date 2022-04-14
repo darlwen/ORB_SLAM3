@@ -77,16 +77,16 @@ int main(int argc, char **argv)
             std::chrono::monotonic_clock::time_point t_Start_Resize = std::chrono::monotonic_clock::now();
 #endif
 #endif
-          //  int width = frame.cols * imageScale;
-          //  int height = frame.rows * imageScale;
+            int fwidth = frame.cols * imageScale;
+            int fheight = frame.rows * imageScale;
 
           //  cout << "height: " << height << "   width: " << width << endl;
           float imageScaleW = frame.cols / width;
           float imageScaleH = frame.rows / height;
-
+          cout << "image width scale: " << imageScaleW << "   image height scale: " << imageScaleH << endl;
           cout << "width: " << frame.cols << " height: " << frame.rows << endl;
 
-            cv::resize(frame, frame, cv::Size(width, height));
+            cv::resize(frame, frame, cv::Size(fwidth, fheight));
 #ifdef REGISTER_TIMES
 #ifdef COMPILEDWITHC11
             std::chrono::steady_clock::time_point t_End_Resize = std::chrono::steady_clock::now();
