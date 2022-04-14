@@ -778,7 +778,7 @@ bool Tracking::ParseCamParamFile(cv::FileStorage &fSettings)
         std::cout << "- Camera: Pinhole" << std::endl;
         std::cout << "- Image scale: " << mImageScale << std::endl;
         std::cout << "- Image width: " << mWidth << std::endl;
-        std::cout << "- Image height: " << mImageHeight << std::endl;
+        std::cout << "- Image height: " << mHeight << std::endl;
         std::cout << "- fx: " << fx << std::endl;
         std::cout << "- fy: " << fy << std::endl;
         std::cout << "- cx: " << cx << std::endl;
