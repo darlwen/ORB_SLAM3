@@ -65,9 +65,9 @@ int main(int argc, char **argv)
 
         if(im.empty())
         {
-            cerr << endl << "Failed to load image at: "
+            cerr << endl << "Finish loading image at: "
                     <<  tframe << endl;
-            return 1;
+            break;
         }
 
         cout << " get one frame image from video" << endl;
