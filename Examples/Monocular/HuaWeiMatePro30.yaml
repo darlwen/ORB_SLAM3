@@ -15,8 +15,8 @@ Camera1.cy: -109.185645
 
 Camera1.k1: 24.0284872
 Camera1.k2: 2281.97121
-Camera1.p1: 500.167019
-Camera1.p2: -40.2349443
+Camera1.p1: 0.0500167019
+Camera1.p2: -0.42349443
 Camera1.k3: -222029.888
 
 # Camera frames per second 
