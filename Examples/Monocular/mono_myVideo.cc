@@ -124,11 +124,15 @@ int main(int argc, char **argv)
     }
     // Stop all threads
     SLAM.Shutdown();
+    cerr << endl << "Finish shut down " << endl;
 
     // Save camera trajectory
     SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
+    cerr << endl << "Finish saving camera trajectory " << endl;
+
+
     SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
-    
+    cerr << endl << "Finish saving keyframeTrajectory " << endl;
 
     return 0;
 }
