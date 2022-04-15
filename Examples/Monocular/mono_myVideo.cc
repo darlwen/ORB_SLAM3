@@ -77,8 +77,8 @@ int main(int argc, char **argv)
             std::chrono::monotonic_clock::time_point t_Start_Resize = std::chrono::monotonic_clock::now();
 #endif
 #endif
-            int fwidth = frame.cols * imageScale;
-            int fheight = frame.rows * imageScale;
+            int fwidth = frame.cols;
+            int fheight = frame.rows;
 
           //  cout << "height: " << height << "   width: " << width << endl;
           float imageScaleW = frame.cols / width;
