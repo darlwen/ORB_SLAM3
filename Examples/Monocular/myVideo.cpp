@@ -17,7 +17,7 @@ string imageStorePath = "/home/lighthouse/orb_slam3/image/test/";
 int main(int argc, char **argv) {
 
 // 声明 ORB-SLAM2 系统
-ORB_SLAM3::System SLAM(vocFile, parameterFile, ORB_SLAM3::System::MONOCULAR, true);
+//ORB_SLAM3::System SLAM(vocFile, parameterFile, ORB_SLAM3::System::MONOCULAR, true);
 // 获取视频图像
 cv::VideoCapture cap(videoFile);    // change to 1 if you want to use USB camera.
 // 记录系统时间
@@ -40,6 +40,7 @@ while (1) {
         string path = imageStorePath + to_string(imageTimestamp) + ".jpg";
         cv::imwrite(path, frame_resized);
         cv::Mat img = cv::imread(path, cv::IMREAD_COLOR);
+        cout << path << endl;
         cv::imshow("show image", img);
         
 
