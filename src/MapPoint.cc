@@ -235,7 +235,7 @@ void MapPoint::SetBadFlag()
         }
     }
 
-    mpMap->EraseMapPoint(this);
+    //mpMap->EraseMapPoint(this);
 }
 
 MapPoint* MapPoint::GetReplaced()

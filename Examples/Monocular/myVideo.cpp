@@ -31,14 +31,15 @@ while (1) {
 
         // rescale because image is too large
         cv::Mat frame_resized;
-        cv::resize(frame, frame_resized, cv::Size(640,480));
+        cv::resize(frame, frame_resized, cv::Size(480,640));
 
         auto now = chrono::system_clock::now();
         auto timestamp = chrono::duration_cast<chrono::milliseconds>(now - start);
         double imageTimestamp = double(timestamp.count())/1000.0;
 
-        string path = imageStorePath + to_string(imageTimestamp) + ".png";
-        imwrite(path, frame_resized);
+        string path = imageStorePath + to_string(imageTimestamp) + ".jpg";
+        cv::imwrite(path, frame_resized);
+        
 
         SLAM.TrackMonocular(frame_resized, imageTimestamp);
         cv::waitKey(30);

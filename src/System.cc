@@ -1495,6 +1495,7 @@ void System::SaveAtlas(int type){
 
         // Save the current session
         mpAtlas->PreSave();
+        cout << "Finish saving atlas map info" << endl;
 
         string pathSaveFileName = "./";
         string tempPathSaveFileName = pathSaveFileName.append(mStrSaveAtlasToFile);
@@ -1530,7 +1531,7 @@ void System::SaveAtlas(int type){
             cout << "End to write save binary file" << endl;
         }
 
-        SaveMap(mvsMapFileName, cv::Size(640,480));
+        SaveMap(mvsMapFileName, cv::Size(480,640));
     }
 }
 
