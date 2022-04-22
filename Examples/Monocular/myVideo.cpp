@@ -37,7 +37,7 @@ while (1) {
         auto timestamp = chrono::duration_cast<chrono::milliseconds>(now - start);
         double imageTimestamp = double(timestamp.count())/1000.0;
 
-        string path = imageStorePath + to_string(imageTimestamp) + ".png";
+        string path = imageStorePath + to_string(imageTimestamp) + ".jpeg";
         imwrite(path, frame_resized);
 
         SLAM.TrackMonocular(frame_resized, imageTimestamp);
