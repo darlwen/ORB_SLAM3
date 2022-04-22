@@ -1495,6 +1495,7 @@ void System::SaveAtlas(int type){
 
         // Save the current session
         mpAtlas->PreSave();
+        cout << "Finish saving atlas map info" << endl;
 
         string pathSaveFileName = "./";
         string tempPathSaveFileName = pathSaveFileName.append(mStrSaveAtlasToFile);
