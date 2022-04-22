@@ -37,14 +37,17 @@ while (1) {
         auto timestamp = chrono::duration_cast<chrono::milliseconds>(now - start);
         double imageTimestamp = double(timestamp.count())/1000.0;
 
-        string path = imageStorePath + to_string(imageTimestamp) + ".jpeg";
-        imwrite(path, frame_resized);
+        string path = imageStorePath + to_string(imageTimestamp) + ".jpg";
+        cv::imwrite(path, frame_resized);
+        cv::Mat img = cv::imread(path, cv::IMREAD_COLOR);
+        cv::imshow("show image", img);
+        
 
-        SLAM.TrackMonocular(frame_resized, imageTimestamp);
+  //      SLAM.TrackMonocular(frame_resized, imageTimestamp);
         cv::waitKey(30);
     }
 
-    SLAM.Shutdown();
+  //  SLAM.Shutdown();
     return 0;
 
 }
