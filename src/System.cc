@@ -1530,7 +1530,7 @@ void System::SaveAtlas(int type){
             cout << "End to write save binary file" << endl;
         }
 
-        SaveMap(mvsMapFileName, cv::Size(640,480));
+        SaveMap(mvsMapFileName, cv::Size(480,640));
     }
 }
 
