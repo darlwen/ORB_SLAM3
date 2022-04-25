@@ -1410,7 +1410,7 @@ void System::InsertTrackTime(double& time)
 void System::SaveMapPoint(ofstream &f, MapPoint *mp, std::vector<int>& keyIds) {
     Eigen::Matrix<float,3,1> mpWorldPos = mp->GetWorldPos();
     f <<" " <<mpWorldPos(0)<<" " << mpWorldPos(1)<<" " << mpWorldPos(2) << " ";
-    f << (mp->nObs)/2<< " ";
+    f << mp->nObs << " ";
 
     std::map<KeyFrame*,std::tuple<int,int>> mapObservation = mp->GetObservations();
     for(auto mit = mapObservation.begin(); mit != mapObservation.end(); mit++)
