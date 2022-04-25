@@ -1413,15 +1413,19 @@ void System::SaveMapPoint(ofstream &f, MapPoint *mp, std::vector<int>& keyIds) {
     f << mp->nObs << " ";
 
     std::map<KeyFrame*,std::tuple<int,int>> mapObservation = mp->GetObservations();
-    cout << "mappoints obs number: " << mp->nObs << endl;
-    cout << "mapObservation size: " << mapObservation.size() << endl;
+    int check =  mp->nObs - mapObservation.size();
+    if(check > 0) {
+        cout << "mappoints obs number: " << mp->nObs << endl;
+        cout << "mapObservation size: " << mapObservation.size() << endl;
+    }
     for(auto mit = mapObservation.begin(); mit != mapObservation.end(); mit++)
     {
         int Frameid;
         Frameid = mit->first->mnId;
         auto keyid = find(keyIds.begin(),keyIds.end(),Frameid) - keyIds.begin();
         f << keyid << " ";
-        cout << "frameid: " << Frameid << "  keyid: " << keyid << endl;
+        if(check > 0 )
+            cout << "frameid: " << Frameid << "  keyid: " << keyid << endl;
     }
     f << "\n";
 }
