@@ -1413,12 +1413,15 @@ void System::SaveMapPoint(ofstream &f, MapPoint *mp, std::vector<int>& keyIds) {
     f << mp->nObs << " ";
 
     std::map<KeyFrame*,std::tuple<int,int>> mapObservation = mp->GetObservations();
+    cout << "mappoints obs number: " << mp->nObs << endl;
+    cout << "mapObservation size: " << mapObservation.size() << endl;
     for(auto mit = mapObservation.begin(); mit != mapObservation.end(); mit++)
     {
         int Frameid;
         Frameid = mit->first->mnId;
         auto keyid = find(keyIds.begin(),keyIds.end(),Frameid) - keyIds.begin();
         f << keyid << " ";
+        cout << "frameid: " << Frameid << "  keyid: " << keyid << endl;
     }
     f << "\n";
 }
@@ -1478,6 +1481,7 @@ void System::SaveMap(const string &filename, const cv::Size image_size) {
     map<long unsigned int, MapPoint*> mps = mpAtlas->GetAtlasMapPoints();
     unsigned long int nMapPoints = mps.size();
     // output # of mappoints
+    cout << "size of keyIds: " << keyIds.size() << endl;
     cout << "The number of MapPoints: " << nMapPoints << endl;
     f << nMapPoints << endl;
     for(auto mp:mps)
