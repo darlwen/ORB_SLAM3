@@ -1408,24 +1408,18 @@ void System::InsertTrackTime(double& time)
 #endif
 
 void System::SaveMapPoint(ofstream &f, MapPoint *mp, std::vector<int>& keyIds) {
+
     Eigen::Matrix<float,3,1> mpWorldPos = mp->GetWorldPos();
     f <<" " <<mpWorldPos(0)<<" " << mpWorldPos(1)<<" " << mpWorldPos(2) << " ";
     f << mp->nObs << " ";
 
     std::map<KeyFrame*,std::tuple<int,int>> mapObservation = mp->GetObservations();
-    int check =  mp->nObs - mapObservation.size();
-    if(check > 0) {
-        cout << "mappoints obs number: " << mp->nObs << endl;
-        cout << "mapObservation size: " << mapObservation.size() << endl;
-    }
     for(auto mit = mapObservation.begin(); mit != mapObservation.end(); mit++)
     {
         int Frameid;
         Frameid = mit->first->mnId;
         auto keyid = find(keyIds.begin(),keyIds.end(),Frameid) - keyIds.begin();
         f << keyid << " ";
-        if(check > 0 )
-            cout << "frameid: " << Frameid << "  keyid: " << keyid << endl;
     }
     f << "\n";
 }
@@ -1485,7 +1479,6 @@ void System::SaveMap(const string &filename, const cv::Size image_size) {
     map<long unsigned int, MapPoint*> mps = mpAtlas->GetAtlasMapPoints();
     unsigned long int nMapPoints = mps.size();
     // output # of mappoints
-    cout << "size of keyIds: " << keyIds.size() << endl;
     cout << "The number of MapPoints: " << nMapPoints << endl;
     f << nMapPoints << endl;
     for(auto mp:mps)
