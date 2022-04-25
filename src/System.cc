@@ -1413,7 +1413,7 @@ void System::SaveMapPoint(ofstream &f, MapPoint *mp, std::vector<int>& keyIds) {
 
     int mapObsN = mapObservation.size();
     if( (mapObsN != mp->nObs) || (mapObsN < 3))
-        continue;
+        return;
 
     Eigen::Matrix<float,3,1> mpWorldPos = mp->GetWorldPos();
     f <<" " <<mpWorldPos(0)<<" " << mpWorldPos(1)<<" " << mpWorldPos(2) << " ";
