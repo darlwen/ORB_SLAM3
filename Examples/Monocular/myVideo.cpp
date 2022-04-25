@@ -12,7 +12,7 @@ string parameterFile = "./HuaWeiMatePro30.yaml";
 string vocFile = "/home/lighthouse/orb_slam3/ORB_SLAM3/Vocabulary/ORBvoc.bin";
 
 string videoFile = "/home/lighthouse/orb_slam3/testVideo/test.mp4";
-string imageStorePath = "/home/lighthouse/orb_slam3/image/test/";
+string imageStorePath = "/home/lighthouse/orb_slam3/image/test/images/";
 
 int main(int argc, char **argv) {
 
