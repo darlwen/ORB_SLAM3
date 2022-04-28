@@ -1491,12 +1491,12 @@ void System::SaveMap(const string &filename, const cv::Size image_size) {
     f.open(poseFileName.c_str());
     for(auto kf:kfs)
         SaveKeyFrame(f,kf.second,keyIds);
-    f.close()
+    f.close();
 
     f.open(frameFileName.c_str());
     for(auto kf:kfs)
         SaveKeyFrameintrinsics(f,kf.second,keyIds);
-    f.close()
+    f.close();
 
     map<long unsigned int, MapPoint*> mps = mpAtlas->GetAtlasMapPoints();
     unsigned long int nMapPoints = mps.size();
