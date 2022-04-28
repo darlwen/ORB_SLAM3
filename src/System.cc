@@ -1472,7 +1472,7 @@ void System::SaveMap(const string &filename, const cv::Size image_size) {
     ofstream f;
     vector<KeyFrame*> vpKFs = mpAtlas->GetAllKeyFrames();
     sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
-    unsigned long int nKeyFrames = kfs.size();
+    unsigned long int nKeyFrames = vpKFs.size();
     // output # of keyframes
     cout << "The number of KeyFrames: " << nKeyFrames << endl;
     f.open(poseFileName.c_str());
