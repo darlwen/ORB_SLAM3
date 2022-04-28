@@ -1444,32 +1444,18 @@ void System::SaveKeyFrameintrinsics(ofstream &f, KeyFrame *kf, std::vector<int>&
 
 }
 
-void System::SaveKeyFrame(ofstream &f, KeyFrame *kf, std::vector<int>& keyIds)
+void System::SaveKeyFrame(ofstream &f, KeyFrame *pKF, std::vector<int>& keyIds)
 {
-    //保存时间戳
-    ostringstream sTimeStamp;
-    sTimeStamp << std::to_string(kf->mTimeStamp);
-    f << sTimeStamp.str() << ",";
 
-    // 保存当前关键帧的位姿
-    Sophus::SE3<float> Tcw = kf->GetPose();
-    Eigen::Matrix<float,3,4> Seg3 = Tcw.matrix3x4();
-    cout << "GetPose " << std::to_string(kf->mTimeStamp) << "Tcw " << Seg3 << endl;
-    //保存平移
-    for(int i=0; i<3; i++)
-    {
-        f << Seg3(i,3) << ",";
-    }
+    if(pKF->isBad())
+        continue;
 
-    Eigen::Matrix<float, 3, 3> rotM = Tcw.rotationMatrix();
-    cv::Mat cvRotM;
-    cv::eigen2cv(rotM, cvRotM);
-    // 通过四元数保存旋转矩阵
-    std::vector<float> Quat = Converter::toQuaternion(cvRotM);
+    Sophus::SE3f Twc = pKF->GetPoseInverse();
+    Eigen::Quaternionf q = Twc.unit_quaternion();
+    Eigen::Vector3f t = Twc.translation();
+    f << setprecision(6) << pKF->mTimeStamp << setprecision(7) << "," << t(0) << "," << t(1) << "," << t(2)
+        << "," << q.x() << "," << q.y() << "," << q.z() << "," << q.w() << endl;
 
-    f << Quat[3] << "," << Quat[0] << "," << Quat[1] << "," << Quat[2];
-    
-    f << "\n";
 }
 
 void System::SaveMap(const string &filename, const cv::Size image_size) {
@@ -1484,18 +1470,19 @@ void System::SaveMap(const string &filename, const cv::Size image_size) {
     cout << "SFM Saving to "<< filename << endl;
 
     ofstream f;
-    map<long unsigned int, KeyFrame*> kfs = mpAtlas->GetAtlasKeyframes();
+    vector<KeyFrame*> vpKFs = mpAtlas->GetAllKeyFrames();
+    sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
     unsigned long int nKeyFrames = kfs.size();
     // output # of keyframes
     cout << "The number of KeyFrames: " << nKeyFrames << endl;
     f.open(poseFileName.c_str());
-    for(auto kf:kfs)
-        SaveKeyFrame(f,kf.second,keyIds);
+    for(auto kf:vpKFs)
+        SaveKeyFrame(f,kf,keyIds);
     f.close();
 
     f.open(frameFileName.c_str());
-    for(auto kf:kfs)
-        SaveKeyFrameintrinsics(f,kf.second,keyIds);
+    for(auto kf:vpKFs)
+        SaveKeyFrameintrinsics(f,kf,keyIds);
     f.close();
 
     map<long unsigned int, MapPoint*> mps = mpAtlas->GetAtlasMapPoints();

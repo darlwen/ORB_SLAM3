@@ -200,7 +200,6 @@ std::vector<MapPoint*> Atlas::GetAllMapPoints()
     return mpCurrentMap->GetAllMapPoints();
 }
 
-
 std::vector<MapPoint*> Atlas::GetReferenceMapPoints()
 {
     unique_lock<mutex> lock(mMutexAtlas);
