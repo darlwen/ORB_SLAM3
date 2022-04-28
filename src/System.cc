@@ -1454,7 +1454,7 @@ void System::SaveKeyFrame(ofstream &f, KeyFrame *pKF, std::vector<int>& keyIds)
     Eigen::Quaternionf q = Twc.unit_quaternion();
     Eigen::Vector3f t = Twc.translation();
     f << setprecision(6) << pKF->mTimeStamp << setprecision(7) << "," << t(0) << "," << t(1) << "," << t(2)
-        << "," << q.x() << "," << q.y() << "," << q.z() << "," << q.w() << endl;
+        << "," << q.w() << "," << q.x() << "," << q.y() << "," << q.z() << endl;
 
 }
 
