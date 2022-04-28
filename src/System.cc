@@ -1470,7 +1470,7 @@ void System::SaveMap(const string &filename, const cv::Size image_size) {
     cout << "SFM Saving to "<< filename << endl;
 
     ofstream f;
-    vector<KeyFrame*> vpKFs = mpAtlas->GetAtlasKeyframes();
+    map<long unsigned int, KeyFrame*> vpKFs = mpAtlas->GetAtlasKeyframes();
     unsigned long int nKeyFrames = vpKFs.size();
     // output # of keyframes
     cout << "The number of KeyFrames: " << nKeyFrames << endl;
