@@ -1428,66 +1428,84 @@ void System::SaveMapPoint(ofstream &f, MapPoint *mp, std::vector<int>& keyIds) {
     f << "\n";
 }
 
+void System::SaveKeyFrameintrinsics(ofstream &f, KeyFrame *kf, std::vector<int>& keyIds)
+{
+    // 保存timestamp
+    keyIds.push_back(kf->mnId);
+    ostringstream sTimeStamp;
+    sTimeStamp << std::to_string(kf->mTimeStamp);
+    f << sTimeStamp.str() << ",";
+
+    // 保存当前关键帧的id
+    f << keyIds.end() - keyIds.begin() - 1<< ",";
+    // 关键帧内参
+    f << kf->fx << "," << kf->fy << "," << kf->cx << "," << kf->cy;
+    f << "\n";
+
+}
+
 void System::SaveKeyFrame(ofstream &f, KeyFrame *kf, std::vector<int>& keyIds)
 {
-    keyIds.push_back(kf->mnId);
-    // 保存当前关键帧的id
-    f << keyIds.end() - keyIds.begin() - 1<< " ";
-    // 关键帧内参
-    f << kf->fx << " " << kf->fy << " " << kf->cx << " " << kf->cy << " ";
+    //保存时间戳
+    ostringstream sTimeStamp;
+    sTimeStamp << std::to_string(kf->mTimeStamp);
+    f << sTimeStamp.str() << ",";
+
     // 保存当前关键帧的位姿
     Sophus::SE3<float> Tcw = kf->GetPose();
+    Eigen::Matrix<float,3,4> Seg3 = Tcw.matrix3x4();
+    cout << "GetPose " << std::to_string(kf->mTimeStamp) << "Tcw " << Seg3 << endl;
+    //保存平移
+    for(int i=0; i<3; i++)
+    {
+        f << Seg3(i,3) << ",";
+    }
+
     Eigen::Matrix<float, 3, 3> rotM = Tcw.rotationMatrix();
     cv::Mat cvRotM;
     cv::eigen2cv(rotM, cvRotM);
     // 通过四元数保存旋转矩阵
     std::vector<float> Quat = Converter::toQuaternion(cvRotM);
 
-    for(int i=0; i<4; i++)
-    {
-        f << Quat[(3+i)%4] << " ";// qw qx qy qz
-    }
-
-    Eigen::Matrix<float,3,4> Seg3 = Tcw.matrix3x4();
-    cout << "GetPose " << std::to_string(kf->mTimeStamp) << "Tcw " << Seg3 << endl;
-    //保存平移
-    for(int i=0; i<3; i++)
-    {
-        f << Seg3(i,3) << " ";
-    }
+    f << Quat[3] << "," << Quat[0] << "," << Quat[1] << "," << Quat[2];
     
-    ostringstream sTimeStamp;
-    sTimeStamp << std::to_string(kf->mTimeStamp);
-    f << sTimeStamp.str();
     f << "\n";
 }
 
 void System::SaveMap(const string &filename, const cv::Size image_size) {
     std::vector<int> keyIds;
 
+    string pathSaveFileName = "./";
+    string tempPathSaveFileName = pathSaveFileName.append(filename);
+    string frameFileName = tempPathSaveFileName.append("_frame.txt");
+    string poseFileName = tempPathSaveFileName.append("_pose.txt");
+
     cout << "begin to save map file for mvs" << endl;
     cout << "SFM Saving to "<< filename << endl;
-    ofstream f;
-    f.open(filename.c_str());
-    f << "MVS "<< image_size.height << " "<< image_size.width << endl;
 
+    ofstream f;
     map<long unsigned int, KeyFrame*> kfs = mpAtlas->GetAtlasKeyframes();
     unsigned long int nKeyFrames = kfs.size();
     // output # of keyframes
     cout << "The number of KeyFrames: " << nKeyFrames << endl;
-    f << nKeyFrames << endl;
+    f.open(poseFileName.c_str());
     for(auto kf:kfs)
         SaveKeyFrame(f,kf.second,keyIds);
-    
+    f.close()
+
+    f.open(frameFileName.c_str());
+    for(auto kf:kfs)
+        SaveKeyFrameintrinsics(f,kf.second,keyIds);
+    f.close()
 
     map<long unsigned int, MapPoint*> mps = mpAtlas->GetAtlasMapPoints();
     unsigned long int nMapPoints = mps.size();
     // output # of mappoints
     cout << "The number of MapPoints: " << nMapPoints << endl;
+    f.open(filename.c_str());
     f << nMapPoints << endl;
     for(auto mp:mps)
         SaveMapPoint(f,mp.second,keyIds);
-
     f.close();
 }
 
