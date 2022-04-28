@@ -1470,19 +1470,18 @@ void System::SaveMap(const string &filename, const cv::Size image_size) {
     cout << "SFM Saving to "<< filename << endl;
 
     ofstream f;
-    vector<KeyFrame*> vpKFs = mpAtlas->GetAllKeyFrames();
-    sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
+    vector<KeyFrame*> vpKFs = mpAtlas->GetAtlasKeyframes();
     unsigned long int nKeyFrames = vpKFs.size();
     // output # of keyframes
     cout << "The number of KeyFrames: " << nKeyFrames << endl;
     f.open(poseFileName.c_str());
     for(auto kf:vpKFs)
-        SaveKeyFrame(f,kf,keyIds);
+        SaveKeyFrame(f,kf.second,keyIds);
     f.close();
 
     f.open(frameFileName.c_str());
     for(auto kf:vpKFs)
-        SaveKeyFrameintrinsics(f,kf,keyIds);
+        SaveKeyFrameintrinsics(f,kf.second,keyIds);
     f.close();
 
     map<long unsigned int, MapPoint*> mps = mpAtlas->GetAtlasMapPoints();
