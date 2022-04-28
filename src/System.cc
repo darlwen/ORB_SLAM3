@@ -1448,7 +1448,7 @@ void System::SaveKeyFrame(ofstream &f, KeyFrame *pKF, std::vector<int>& keyIds)
 {
 
     if(pKF->isBad())
-        continue;
+        return;
 
     Sophus::SE3f Twc = pKF->GetPoseInverse();
     Eigen::Quaternionf q = Twc.unit_quaternion();
