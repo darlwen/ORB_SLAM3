@@ -175,7 +175,7 @@ public:
 
     void SaveMapPoint(ofstream &f, MapPoint *mp, std::vector<int>& keyIds);
     void SaveKeyFrame(ofstream &f, KeyFrame *kf, std::vector<int>& keyIds);
-    void SaveKeyFrameintrinsics(ofstream &f, KeyFrame *kf, std::vector<int>& keyIds)
+    void SaveKeyFrameintrinsics(ofstream &f, KeyFrame *kf, std::vector<int>& keyIds);
 
 
     // Information from most recent processed frame
