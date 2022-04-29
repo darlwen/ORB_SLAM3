@@ -11,10 +11,9 @@ using namespace std;
 string parameterFile = "./HuaWeiMatePro30.yaml";
 string vocFile = "/home/lighthouse/orb_slam3/ORB_SLAM3/Vocabulary/ORBvoc.bin";
 
-string videoFile = "/home/lighthouse/orb_slam3/testVideo/eating/eating.mp4";
-string imageStorePath = "/home/lighthouse/orb_slam3/image/test/images/";
-string trajectoryFile = "/home/lighthouse/orb_slam3/testVideo/eating/eating_trajectory.txt";
-string camIntrinsicsFile = "/home/lighthouse/orb_slam3/testVideo/eating/camera_intrinsic.txt";
+string videoFile = "/home/lighthouse/orb_slam3/testVideo/livingRoom/livingRoom.mp4";
+string trajectoryFile = "/home/lighthouse/orb_slam3/testVideo/livingRoom/eating_trajectory.txt";
+string camIntrinsicsFile = "/home/lighthouse/orb_slam3/testVideo/livingRoom/camera_intrinsic.txt";
 
 int main(int argc, char **argv) {
 
@@ -37,15 +36,11 @@ while (1) {
 
         // rescale because image is too large
         cv::Mat frame_resized;
-        cv::resize(frame, frame_resized, cv::Size(480,640));
+        cv::resize(frame, frame_resized, cv::Size(720,1280));
 
         auto now = chrono::system_clock::now();
         auto timestamp = chrono::duration_cast<chrono::milliseconds>(now - start);
         double imageTimestamp = double(timestamp.count())/1000.0;
-
-        string path = imageStorePath + to_string(imageTimestamp) + ".jpg";
-        cv::imwrite(path, frame_resized);
-        idx += 1;
 
         Sophus::SE3f Tcw = SLAM.TrackMonocular(frame_resized, imageTimestamp);
         Sophus::SE3f Twc = Tcw.inverse();
@@ -60,6 +55,7 @@ while (1) {
         float cy = 236.44062294; 
 
         cf << setprecision(6) << imageTimestamp << "," << idx << "," << fx << "," << fy << "," << cx << "," << cy << endl;
+        idx += 1;
         cv::waitKey(30);
     }
     f.close();
