@@ -11,8 +11,10 @@ using namespace std;
 string parameterFile = "./HuaWeiMatePro30.yaml";
 string vocFile = "/home/lighthouse/orb_slam3/ORB_SLAM3/Vocabulary/ORBvoc.bin";
 
-string videoFile = "/home/lighthouse/orb_slam3/testVideo/test.mp4";
+string videoFile = "/home/lighthouse/orb_slam3/testVideo/eating/eating.mp4";
 string imageStorePath = "/home/lighthouse/orb_slam3/image/test/images/";
+string trajectoryFile = "/home/lighthouse/orb_slam3/testVideo/eating/eating_trajectory.txt";
+string camIntrinsicsFile = "/home/lighthouse/orb_slam3/testVideo/eating/camera_intrinsic.txt";
 
 int main(int argc, char **argv) {
 
@@ -22,6 +24,10 @@ ORB_SLAM3::System SLAM(vocFile, parameterFile, ORB_SLAM3::System::MONOCULAR, tru
 cv::VideoCapture cap(videoFile);    // change to 1 if you want to use USB camera.
 // 记录系统时间
 auto start = chrono::system_clock::now();
+ofstream f, cf;
+f.open(trajectoryFile.c_str());
+cf.open(camIntrinsicsFile.c_str());
+int idx = 0;
 
 while (1) {
         cv::Mat frame;
@@ -39,12 +45,25 @@ while (1) {
 
         string path = imageStorePath + to_string(imageTimestamp) + ".jpg";
         cv::imwrite(path, frame_resized);
-        
+        idx += 1;
 
-        SLAM.TrackMonocular(frame_resized, imageTimestamp);
+        Sophus::SE3f Tcw = SLAM.TrackMonocular(frame_resized, imageTimestamp);
+        Sophus::SE3f Twc = Tcw.inverse();
+        Eigen::Quaternionf q = Twc.unit_quaternion();
+        Eigen::Vector3f t = Twc.translation();
+        f << setprecision(6) << imageTimestamp << setprecision(7) << "," << t(0) << "," << t(1) << "," << t(2)
+            << "," << q.w() << "," << q.x() << "," << q.y() << "," << q.z() << endl;
+
+        float fx = 503.37802572;
+        float fy = 502.14645985;
+        float cx = 320.87743973;
+        float cy = 236.44062294; 
+
+        cf << setprecision(6) << imageTimestamp << "," << idx << "," << fx << "," << fy << "," << cx << "," << cy << endl;
         cv::waitKey(30);
     }
-
+    f.close();
+    cf.close();
     SLAM.Shutdown();
     return 0;
 
