@@ -9,11 +9,11 @@
 using namespace std;
 
 string parameterFile = "./HuaWeiMatePro30.yaml";
-string vocFile = "/home/lighthouse/orb_slam3/ORB_SLAM3/Vocabulary/ORBvoc.bin";
+string vocFile = "/home/ubuntu/ORB_SLAM3/Vocabulary/ORBvoc.bin";
 
-string videoFile = "/home/lighthouse/orb_slam3/testVideo/livingRoomA/RoomA.mp4";
-string trajectoryFile = "/home/lighthouse/orb_slam3/testVideo/livingRoomA/eating_trajectory.txt";
-string camIntrinsicsFile = "/home/lighthouse/orb_slam3/testVideo/livingRoomA/camera_intrinsic.txt";
+string videoFile = "/home/ubuntu/testVideo/livingRoomA/RoomA.mp4";
+string trajectoryFile = "/home/ubuntu/testVideo/livingRoomA/eating_trajectory.txt";
+string camIntrinsicsFile = "/home/ubuntu/testVideo/livingRoomA/camera_intrinsic.txt";
 
 int main(int argc, char **argv) {
 
