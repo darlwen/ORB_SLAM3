@@ -1408,11 +1408,16 @@ void System::InsertTrackTime(double& time)
 #endif
 
 void System::SaveMapPoint(ofstream &f, MapPoint *mp, std::vector<int>& keyIds) {
-    Eigen::Matrix<float,3,1> mpWorldPos = mp->GetWorldPos();
-    f <<" " <<mpWorldPos(0)<<" " << mpWorldPos(1)<<" " << mpWorldPos(2) << " ";
-    f << (mp->nObs)/2<< " ";
 
     std::map<KeyFrame*,std::tuple<int,int>> mapObservation = mp->GetObservations();
+
+    int mapObsN = mapObservation.size();
+    if( (mapObsN != mp->nObs) || (mapObsN < 3))
+        return;
+
+    Eigen::Matrix<float,3,1> mpWorldPos = mp->GetWorldPos();
+    f <<" " <<mpWorldPos(0)<<" " << mpWorldPos(1)<<" " << mpWorldPos(2) << " ";
+    f << mp->nObs << " ";
     for(auto mit = mapObservation.begin(); mit != mapObservation.end(); mit++)
     {
         int Frameid;
@@ -1423,66 +1428,70 @@ void System::SaveMapPoint(ofstream &f, MapPoint *mp, std::vector<int>& keyIds) {
     f << "\n";
 }
 
-void System::SaveKeyFrame(ofstream &f, KeyFrame *kf, std::vector<int>& keyIds)
+void System::SaveKeyFrameintrinsics(ofstream &f, KeyFrame *kf, std::vector<int>& keyIds)
 {
+    // 保存timestamp
     keyIds.push_back(kf->mnId);
-    // 保存当前关键帧的id
-    f << keyIds.end() - keyIds.begin() - 1<< " ";
-    // 关键帧内参
-    f << kf->fx << " " << kf->fy << " " << kf->cx << " " << kf->cy << " ";
-    // 保存当前关键帧的位姿
-    Sophus::SE3<float> Tcw = kf->GetPose();
-    Eigen::Matrix<float, 3, 3> rotM = Tcw.rotationMatrix();
-    cv::Mat cvRotM;
-    cv::eigen2cv(rotM, cvRotM);
-    // 通过四元数保存旋转矩阵
-    std::vector<float> Quat = Converter::toQuaternion(cvRotM);
-
-    for(int i=0; i<4; i++)
-    {
-        f << Quat[(3+i)%4] << " ";// qw qx qy qz
-    }
-
-    Eigen::Matrix<float,3,4> Seg3 = Tcw.matrix3x4();
-    cout << "GetPose " << std::to_string(kf->mTimeStamp) << "Tcw " << Seg3 << endl;
-    //保存平移
-    for(int i=0; i<3; i++)
-    {
-        f << Seg3(i,3) << " ";
-    }
-    
     ostringstream sTimeStamp;
     sTimeStamp << std::to_string(kf->mTimeStamp);
-    f << sTimeStamp.str();
+    f << sTimeStamp.str() << ",";
+
+    // 保存当前关键帧的id
+    f << keyIds.end() - keyIds.begin() - 1<< ",";
+    // 关键帧内参
+    f << kf->fx << "," << kf->fy << "," << kf->cx << "," << kf->cy;
     f << "\n";
+
+}
+
+void System::SaveKeyFrame(ofstream &f, KeyFrame *pKF, std::vector<int>& keyIds)
+{
+
+    if(pKF->isBad())
+        return;
+
+    Sophus::SE3f Twc = pKF->GetPoseInverse();
+    Eigen::Quaternionf q = Twc.unit_quaternion();
+    Eigen::Vector3f t = Twc.translation();
+    f << setprecision(6) << pKF->mTimeStamp << setprecision(7) << "," << t(0) << "," << t(1) << "," << t(2)
+        << "," << q.w() << "," << q.x() << "," << q.y() << "," << q.z() << endl;
+
 }
 
 void System::SaveMap(const string &filename, const cv::Size image_size) {
     std::vector<int> keyIds;
 
+    string pathSaveFileName = "./";
+    string tempPathSaveFileName = pathSaveFileName.append(filename);
+    string frameFileName = tempPathSaveFileName.append("_frame.txt");
+    string poseFileName = tempPathSaveFileName.append("_pose.txt");
+
     cout << "begin to save map file for mvs" << endl;
     cout << "SFM Saving to "<< filename << endl;
-    ofstream f;
-    f.open(filename.c_str());
-    f << "MVS "<< image_size.height << " "<< image_size.width << endl;
 
-    map<long unsigned int, KeyFrame*> kfs = mpAtlas->GetAtlasKeyframes();
-    unsigned long int nKeyFrames = kfs.size();
+    ofstream f;
+    map<long unsigned int, KeyFrame*> vpKFs = mpAtlas->GetAtlasKeyframes();
+    unsigned long int nKeyFrames = vpKFs.size();
     // output # of keyframes
     cout << "The number of KeyFrames: " << nKeyFrames << endl;
-    f << nKeyFrames << endl;
-    for(auto kf:kfs)
+    f.open(poseFileName.c_str());
+    for(auto kf:vpKFs)
         SaveKeyFrame(f,kf.second,keyIds);
-    
+    f.close();
+
+    f.open(frameFileName.c_str());
+    for(auto kf:vpKFs)
+        SaveKeyFrameintrinsics(f,kf.second,keyIds);
+    f.close();
 
     map<long unsigned int, MapPoint*> mps = mpAtlas->GetAtlasMapPoints();
     unsigned long int nMapPoints = mps.size();
     // output # of mappoints
     cout << "The number of MapPoints: " << nMapPoints << endl;
+    f.open(filename.c_str());
     f << nMapPoints << endl;
     for(auto mp:mps)
         SaveMapPoint(f,mp.second,keyIds);
-
     f.close();
 }
 

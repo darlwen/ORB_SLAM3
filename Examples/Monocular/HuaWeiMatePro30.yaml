@@ -26,11 +26,11 @@ Camera.fps: 30
 Camera.RGB: 1
 
 # Camera resolution
-Camera.width: 640
-Camera.height: 480
+Camera.width: 720
+Camera.height: 1280
 
-Camera.newWidth: 480
-Camera.newHeight: 640
+Camera.newWidth: 720
+Camera.newHeight: 1280
 
 
 #--------------------------------------------------------------------------------------------
